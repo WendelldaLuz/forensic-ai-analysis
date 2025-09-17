@@ -1,0 +1,32 @@
+{
+  "app": {
+    "name": "Forensic AI Analysis System",
+    "version": "1.0.0",
+    "description": "Sistema Autônomo de IA para Análise Forense",
+    "author": "Wendell da Luz Silva",
+    "debug": false
+  },
+  "analysis": {
+    "confidence_threshold": 0.8,
+    "max_processing_time": 300,
+    "supported_formats": ["dcm", "dicom"],
+    "default_temperature": 25,
+    "default_humidity": 60
+  },
+  "ui": {
+    "theme": "gradient",
+    "sidebar_expanded": true,
+    "show_advanced_options": true
+  },
+  "security": {
+    "local_processing_only": true,
+    "auto_cleanup": true,
+    "log_actions": true
+  },
+  "paths": {
+    "data_dir": "data",
+    "logs_dir": "logs", 
+    "temp_dir": "temp",
+    "reports_dir": "reports"
+  }
+}
