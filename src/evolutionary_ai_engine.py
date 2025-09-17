@@ -390,6 +390,21 @@ class GasDiffusionModel:
 
 
 class EvolutionaryLearningEngine:
+    """Engine de Aprendizado Evolutivo"""
+    
+    def __init__(self, learning_data_path: str = "data/learning_database.json"):
+        # Definir gases aqui também
+        self.gases = ['Putrescina', 'Cadaverina', 'Metano']
+        self.diffusion_coefficients = {
+            'Putrescina': 0.05,
+            'Cadaverina': 0.045, 
+            'Metano': 0.12
+        }
+        self.detection_limits = {
+            'Putrescina': 5.0,
+            'Cadaverina': 5.0,
+            'Metano': 2.0
+        }
     """
     Engine de Aprendizado Evolutivo que melhora com cada análise
     """
@@ -647,7 +662,7 @@ class EvolutionaryLearningEngine:
                 concentrations = np.array(concentrations)
                 
                 # Ajustar modelo de difusão
-                model_fit = self.gas_model.fit_diffusion_model(time_points, concentrations, gas, site)
+                model_fit = self.fit_diffusion_model(time_points, concentrations, gas, site)
                 
                 results[gas][site] = {
                     'concentrations': concentrations.tolist(),
@@ -966,16 +981,16 @@ class EvolutionaryLearningEngine:
         
         # Ajustar coeficientes de difusão
         for gas in self.gases:
-            current_coeff = self.gas_model.diffusion_coefficients[gas]
+            current_coeff = self.diffusion_coefficients[gas]
             # Pequeno ajuste aleatório
             adjustment = np.random.uniform(0.9, 1.1)
-            self.gas_model.diffusion_coefficients[gas] = current_coeff * adjustment
+            self.diffusion_coefficients[gas] = current_coeff * adjustment
         
         # Ajustar limites de detecção
         for gas in self.gases:
-            current_limit = self.gas_model.detection_limits[gas]
+            current_limit = self.detection_limits[gas]
             adjustment = np.random.uniform(0.95, 1.05)
-            self.gas_model.detection_limits[gas] = current_limit * adjustment
+            self.detection_limits[gas] = current_limit * adjustment
     
     def _reinforce_current_parameters(self):
         """Reforça parâmetros atuais quando performance é boa"""
@@ -984,8 +999,8 @@ class EvolutionaryLearningEngine:
         
         # Salvar parâmetros ótimos
         self.knowledge_base['optimized_parameters'] = {
-            'diffusion_coefficients': self.gas_model.diffusion_coefficients.copy(),
-            'detection_limits': self.gas_model.detection_limits.copy(),
+            'diffusion_coefficients': self.diffusion_coefficients.copy(),
+            'detection_limits': self.detection_limits.copy(),
             'optimization_timestamp': datetime.now().isoformat()
         }
     
